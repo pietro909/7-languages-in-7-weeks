@@ -1,0 +1,76 @@
+n statically typed languages[edit]
+Certain usually statically typed languages such as Boo and the version 4 release of C# have extra type annotations[2][3] that instruct the compiler to arrange for type checking of classes to occur at run-time rather than compile time, and include run-time type checking code in the compiled output.
+
+Comparison with other type systems[edit]
+Structural type systems[edit]
+Duck typing is similar to, but distinct from structural typing. Structural typing is a static typing system that determines type compatibility and equivalence by a type's structure, whereas duck typing is dynamic and determines type compatibility by only that part of a type's structure that is accessed during run time.
+
+The OCaml, Scala, Go, and Gosu languages support structural typing to varying degrees.
+
+Protocols and Interfaces[edit]
+Protocols and interfaces can provide some of the benefits of duck typing, but duck typing is distinct in that no explicit interface is defined. For example, if a third party Java library implements a class you are not allowed to modify, you cannot use an instance of the class in place of an interface you have defined yourself, whereas duck typing would allow this. Again, all of an interface must be satisfied for compatibility.
+
+Templates or generic types[edit]
+Template, or generic functions or methods apply the duck test in a static typing context; this brings all the advantages and disadvantages of static versus dynamic type checking in general. Duck typing can also be more flexible in that only the methods actually called at run time need to be implemented, while templates require implementation of all methods that cannot be proven unreachable at compile time.
+
+Examples include the languages C++ and D with templates, which developed from Ada generics.
+
+Criticism[edit]
+One issue with duck typing is that it forces programmers to have a much wider understanding of the code they are working with at any given time. For instance, in Python, one could easily create a class called Wine, which expects a class implementing the "press" attribute as an ingredient. However, a class called Trousers might also implement the press() method. With duck typing, in order to prevent strange, hard-to-detect errors, the developer needs to be aware of each potential use of the method "press", even when it's conceptually unrelated to what they are working on. By way of contrast, in a strongly and statically typed language that uses type hierarchies and parameter type checking, it's much harder to supply an unexpected object type to a class. For example, in a language like Java, the ambiguity in the above reuse of the method name press() would not be a problem unless one of the two classes was deliberately defined as a child of the other.[citation needed]
+
+Proponents of duck typing, such as Guido van Rossum, argue that the issue is handled by testing, and the necessary knowledge of the codebase required to maintain it.[4][5]
+
+Criticisms around duck typing tend to be special cases of broader points of contention regarding dynamically typed versus statically typed programming language semantics.[citation needed]
+
+History[edit]
+Alex Martelli made an early (2000) use of the term in a message to the comp.lang.python newsgroup:
+
+In other words, don't check whether it IS-a duck: check whether it QUACKS-like-a duck, WALKS-like-a duck, etc, etc, depending on exactly what subset of duck-like behaviour you need to play your language-games with.
+
+Language support[edit]
+In C#[edit]
+As of C# 4.0 the compiler and runtime collaborate to implement dynamic member lookup.
+
+In the following C# 6.0 code, the parameter duck of the method Program.InTheForest is declared as dynamic.
+
+using static System.Console;
+
+class Duck
+{
+    public void Quack() => WriteLine("Quaaaaaack!");
+    public void Feathers() => WriteLine("The duck has white and gray feathers.");
+}
+
+class Person
+{
+    public void Quack() => WriteLine("The person imitates a duck.");
+    public void Feathers() => WriteLine("The person takes a feather from the ground and shows it.");
+}
+
+class Program
+{
+    static void InTheForest(dynamic duck)
+    {
+        duck.Quack();
+        duck.Feathers();
+    }
+
+    static void Game()
+    {
+        Duck donald = new Duck();
+        Person john = new Person();
+        InTheForest(donald);
+        InTheForest(john);
+    }
+
+    static void Main()
+    {
+        Game();
+    }
+}
+In CFML[edit]
+The web application scripting language CFML allows function arguments to be specified as having type any. For this sort of argument, an arbitrary object can be passed in and method calls are bound dynamically at runtime. If an object does not implement a called method, a runtime exception is thrown that can be caught and handled gracefully. In ColdFusion 8, this can be picked up as a defined event onMissingMethod() rather than through an exception handler. An alternative argument type of WEB-INF.cftags.component restricts the passed argument to be a ColdFusion Component (CFC), which provides better error messages should a non-object be passed in.
+
+Other CFML application servers such as Lucee work analogously to ColdFusion's CFML implementation.
+
+
