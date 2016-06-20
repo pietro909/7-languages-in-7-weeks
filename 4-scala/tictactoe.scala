@@ -1,7 +1,3 @@
-//args.map( a => println(a)
-//val board = List('_', '_', '_', 'o', 'x', 'o', 'o', 'x', 'o')
-// val board = args
-
 val x = 'x'
 val o = 'o'
 val empty = '_'
@@ -22,38 +18,38 @@ class Board(val size: Int)
     filterWinner(dNE.toList, dNW.toList)
   }
 
+  private def checkRowsAndCols(list: List[Char]): Option[Char] = {
+    val r1 = 1 to (size*size) by size
+    val r2 = 0 to size
+    r1.zip(r2).map((coords) => {
+      val row = collectRow(list.drop(coords._1 - 1))
+      val column = collectColumn(list.drop(coords._2 - 1))
+      filterWinner(row, column)
+    }).find(_.isDefined).map(_.get)
+  }
+
   private def filterWinner(l1: List[Char], l2: List[Char]): Option[Char] =
     (l1.length, l2.length) match {
-      case (1, _) => l1.headOption
-      case (_, 1) => l2.headOption
+      case (1, _) =>
+        if (l1.head == empty) None
+        else l1.headOption
+      case (_, 1) =>
+        if (l2.head == empty) None
+        else l2.headOption
       case _ => None
     }
 
-  def check1(board: List[Char]): Option[Char] = {
-    val row = collectRow(board)
-    val column = collectColumn(board)
-    filterWinner(row, column)
-  }
-
-  def check5(board: List[Char]): Option[Char]= {
-    val row: List[Char] = collectRow(board.drop(size))
-    val column: List[Char] = collectColumn(board.drop(1))
-    filterWinner(row, column)
-  }
-
-  def check9(board: List[Char]): Option[Char] = {
-    val row: List[Char] = collectRow(board.drop(size * 2))
-    val column: List[Char] = collectColumn(board.drop(2))
-    filterWinner(row, column)
-  }
-
   def findWinner(board: List[Char]): Option[Char] = {
-    List(check1(board), check5(board), check9(board), checkDiagonals(board)).filter(_.isDefined).map(_.get).headOption
+    List(checkRowsAndCols(board), checkDiagonals(board))
+      .filter(_.isDefined)
+      .map(_.get)
+      .headOption
   }
 
 }
 
-val b = new Board(3)
+val board = new Board(3)
 val input = args.map(_.head).toList
+
 println(input)
-println(b.findWinner(input))
+println(board.findWinner(input))
